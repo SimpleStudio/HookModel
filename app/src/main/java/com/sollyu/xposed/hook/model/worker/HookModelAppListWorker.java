@@ -100,7 +100,8 @@ public class HookModelAppListWorker
             ToolsHelper.ShowAlertDialogOk(activity, HookModelAppListWorker.GetAppListString(17), HookModelAppListWorker.GetAppListString(21));
         }
 
-        HookModelAppSettingUpdate.CheckUpdate(activity, false);
+        // EDIT 关闭自动更新
+//        HookModelAppSettingUpdate.CheckUpdate(activity, false);
     }
 
     public void onReloadInstallPackages()
