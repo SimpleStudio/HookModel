@@ -102,6 +102,8 @@ public class HookModelAppListWorker
 
         // EDIT 关闭自动更新
 //        HookModelAppSettingUpdate.CheckUpdate(activity, false);
+        // EDIT 手动创建preference文件
+        activity.getSharedPreferences(activity.getPackageName() + "_preferences", Context.MODE_WORLD_READABLE | Context.MODE_MULTI_PROCESS).edit().putBoolean(activity.getPackageName(), false).apply();
     }
 
     public void onReloadInstallPackages()
