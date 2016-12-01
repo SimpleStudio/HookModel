@@ -68,9 +68,11 @@ public class HookModel implements IXposedHookLoadPackage
             if (pref.getBoolean(lpparam.packageName, false))
             {
                 final String hookModelManufacutrerKey            = lpparam.packageName + ".hookModelManufacutrer";
+                final String hookModelDeviceKey                  = lpparam.packageName + ".hookModelDevice";
                 final String hookModelModelKey                   = lpparam.packageName + ".hookModelModel";
                 final String hookModelAdvancedSwitchKey          = lpparam.packageName + ".hookModelAdvanced";
                 final String hookModelAdvancedImeiKey            = lpparam.packageName + ".hookModelAdvancedImei";
+                final String hookModelAdvancedImsiKey            = lpparam.packageName + ".hookModelAdvancedImsi";
                 final String hookModelAdvancedSimSerialNumberKey = lpparam.packageName + ".hookModelAdvancedSimSerialNumber";
                 final String hookModelAdvancedMacAddressKey      = lpparam.packageName + ".hookModelAdvancedMacAddress";
                 final String hookModelAdvancedAndroidIdKey       = lpparam.packageName + ".hookModelAdvancedAndroidId";
@@ -78,9 +80,11 @@ public class HookModel implements IXposedHookLoadPackage
                 Class<?> classBuild = XposedHelpers.findClass("android.os.Build", lpparam.classLoader);
 
                 String saveManufacutrer = pref.getString(hookModelManufacutrerKey, "null");
+                String saveDevice = pref.getString(hookModelDeviceKey, "null");
                 String saveModel        = pref.getString(hookModelModelKey, "null");
 
                 if (!saveManufacutrer.equals("null") && !saveManufacutrer.equals("")) XposedHelpers.setStaticObjectField(classBuild, "MANUFACTURER", saveManufacutrer);
+                if (!saveDevice.equals("null") && !saveDevice.equals("")) XposedHelpers.setStaticObjectField(classBuild, "DEVICE", saveDevice);
                 if (!saveModel       .equals("null") && !saveModel       .equals("")) XposedHelpers.setStaticObjectField(classBuild, "MODEL", saveModel);
 
                 // hook advanced
@@ -90,6 +94,7 @@ public class HookModel implements IXposedHookLoadPackage
                     Class<?> classWifiInfo         = XposedHelpers.findClass("android.net.wifi.WifiInfo", lpparam.classLoader);
                     Class<?> classSettingsSecure   = XposedHelpers.findClass("android.provider.Settings.Secure", lpparam.classLoader);
 
+                    // IMEI
                     XposedHelpers.findAndHookMethod(classTelephonyManager, "getDeviceId", new XC_MethodHook()
                     {
                         @Override
@@ -101,6 +106,19 @@ public class HookModel implements IXposedHookLoadPackage
                         }
                     });
 
+                    // IMSI
+                    XposedHelpers.findAndHookMethod(classTelephonyManager, "getSubscriberId", new XC_MethodHook()
+                    {
+                        @Override
+                        protected void afterHookedMethod(MethodHookParam param) throws Throwable
+                        {
+                            String saveValue = pref.getString(hookModelAdvancedImsiKey, "null");
+                            if (!saveValue.equals("null") && !saveValue.equals("")) param.setResult(saveValue);
+                            super.afterHookedMethod(param);
+                        }
+                    });
+
+                    // ICCID
                     XposedHelpers.findAndHookMethod(classTelephonyManager, "getSimSerialNumber", new XC_MethodHook()
                     {
                         @Override
@@ -112,6 +130,7 @@ public class HookModel implements IXposedHookLoadPackage
                         }
                     });
 
+                    // mac
                     XposedHelpers.findAndHookMethod(classWifiInfo, "getMacAddress", new XC_MethodHook()
                     {
                         @Override
@@ -123,6 +142,7 @@ public class HookModel implements IXposedHookLoadPackage
                         }
                     });
 
+                    // android_id
                     XposedHelpers.findAndHookMethod(classSettingsSecure, "getString", android.content.ContentResolver.class , java.lang.String.class, new XC_MethodHook()
                     {
                         @Override

@@ -17,7 +17,9 @@ import com.sollyu.xposed.hook.model.utils.SystemBarTintManager;
 import com.sollyu.xposed.hook.model.utils.ToolsHelper;
 import com.sollyu.xposed.hook.model.worker.HookModelAppSettingsItem.HookModelAppSettingsAdvancedAndroidId;
 import com.sollyu.xposed.hook.model.worker.HookModelAppSettingsItem.HookModelAppSettingsAdvancedImei;
+import com.sollyu.xposed.hook.model.worker.HookModelAppSettingsItem.HookModelAppSettingsAdvancedImsi;
 import com.sollyu.xposed.hook.model.worker.HookModelAppSettingsItem.HookModelAppSettingsAdvancedSimSerialNumber;
+import com.sollyu.xposed.hook.model.worker.HookModelAppSettingsItem.HookModelAppSettingsDevice;
 import com.sollyu.xposed.hook.model.worker.HookModelAppSettingsItem.HookModelAppSettingsMacAddress;
 import com.sollyu.xposed.hook.model.worker.HookModelAppSettingsItem.HookModelAppSettingsManufacturer;
 import com.sollyu.xposed.hook.model.worker.HookModelAppSettingsItem.HookModelAppSettingsModel;
@@ -82,8 +84,10 @@ public class HookModelAppSettingsWorker
         protected HookModelAppSettingsOpenHook                m_hookModelOpenHookSwitchPreference                  = null;
         protected HookModelAppSettingsOpenAdvanced            m_hookModelOpenAdvancedSwitchPreference              = null;
         protected HookModelAppSettingsManufacturer            m_hookModelManufacturerEditTextPreference            = null;
+        protected HookModelAppSettingsDevice                  m_hookModelDeviceEditTextPreference                  = null;
         protected HookModelAppSettingsModel                   m_hookModelModelEditTextPreference                   = null;
         protected HookModelAppSettingsAdvancedImei            m_hookModelAdvancedImeiEditTextPreference            = null;
+        protected HookModelAppSettingsAdvancedImsi            m_hookModelAdvancedImsiEditTextPreference            = null;
         protected HookModelAppSettingsAdvancedSimSerialNumber m_hookModelAdvancedSimSerialNumberEditTextPreference = null;
         protected HookModelAppSettingsMacAddress              m_hookModelAdvancedMacAddressEditTextPreference      = null;
         protected HookModelAppSettingsAdvancedAndroidId       m_hookModelAdvancedAndroidIdEditTextPreference       = null;
@@ -98,8 +102,10 @@ public class HookModelAppSettingsWorker
             m_hookModelOpenHookSwitchPreference                  = new HookModelAppSettingsOpenHook(this, HookModelAppSettingsWorker.packageName);
             m_hookModelOpenAdvancedSwitchPreference              = new HookModelAppSettingsOpenAdvanced(this, HookModelAppSettingsWorker.packageName);
             m_hookModelManufacturerEditTextPreference            = new HookModelAppSettingsManufacturer(this, HookModelAppSettingsWorker.packageName);
+            m_hookModelDeviceEditTextPreference                  = new HookModelAppSettingsDevice(this, HookModelAppSettingsWorker.packageName);
             m_hookModelModelEditTextPreference                   = new HookModelAppSettingsModel(this, HookModelAppSettingsWorker.packageName);
             m_hookModelAdvancedImeiEditTextPreference            = new HookModelAppSettingsAdvancedImei(this, HookModelAppSettingsWorker.packageName, m_hookModelOpenAdvancedSwitchPreference.getKey());
+            m_hookModelAdvancedImsiEditTextPreference            = new HookModelAppSettingsAdvancedImsi(this, HookModelAppSettingsWorker.packageName, m_hookModelOpenAdvancedSwitchPreference.getKey());
             m_hookModelAdvancedSimSerialNumberEditTextPreference = new HookModelAppSettingsAdvancedSimSerialNumber(this, HookModelAppSettingsWorker.packageName, m_hookModelOpenAdvancedSwitchPreference.getKey());
             m_hookModelAdvancedMacAddressEditTextPreference      = new HookModelAppSettingsMacAddress(this, HookModelAppSettingsWorker.packageName, m_hookModelOpenAdvancedSwitchPreference.getKey());
             m_hookModelAdvancedAndroidIdEditTextPreference       = new HookModelAppSettingsAdvancedAndroidId(this, HookModelAppSettingsWorker.packageName, m_hookModelOpenAdvancedSwitchPreference.getKey());
@@ -233,6 +239,7 @@ public class HookModelAppSettingsWorker
                                             JSONObject modeInfoJsonObject = manufacturerJsonObject.getJSONObject(modelStrings[arg1]);
 
                                             m_hookModelManufacturerEditTextPreference.setText(modeInfoJsonObject.getString(HookModelAppListWorker.GetAppSettingsString(14)));
+                                            m_hookModelDeviceEditTextPreference.setText(modeInfoJsonObject.getString(HookModelAppListWorker.GetAppSettingsString(45)));
                                             m_hookModelModelEditTextPreference.setText(modeInfoJsonObject.getString(HookModelAppListWorker.GetAppSettingsString(15)));
                                         }
                                         catch (JSONException e) { e.printStackTrace(); }

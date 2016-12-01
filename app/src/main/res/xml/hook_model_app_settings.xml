@@ -4,12 +4,14 @@
         <SwitchPreference android:key="hookModelOpenHookSwitch" />
         <Preference android:key="hookModelSelectModels" android:title="常用机型" />
         <EditTextPreference android:key="hookModelManufacutrer" />
+        <EditTextPreference android:key="hookModelDevice" />
         <EditTextPreference android:key="hookModelModel" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="高级伪装" >
         <SwitchPreference android:key="hookModelAdvancedSwitch"/>
         <com.sollyu.xposed.hook.model.worker.EditTextDialogPreference android:key="hookModelAdvancedImei" />
+        <com.sollyu.xposed.hook.model.worker.EditTextDialogPreference android:key="hookModelAdvancedImsi" />
         <com.sollyu.xposed.hook.model.worker.EditTextDialogPreference android:key="hookModelAdvancedSimSerialNumber" />
         <com.sollyu.xposed.hook.model.worker.EditTextDialogPreference android:key="hookModelAdvancedMacAddress" />
         <com.sollyu.xposed.hook.model.worker.EditTextDialogPreference android:key="hookModelAdvancedAndroidId" />
